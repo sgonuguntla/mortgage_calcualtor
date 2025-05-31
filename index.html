@@ -1,0 +1,24 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mortgage Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="calculator">
+        <h1>Mortgage Calculator</h1>
+        <label>Principal Amount: <input type="number" id="principal" /></label>
+        <label>Annual Interest Rate (%): <input type="number" step="0.01" id="rate" /></label>
+        <label>Loan Term (years): <input type="number" id="years" /></label>
+        <label>Down Payment: <input type="number" id="downpayment" /></label>
+        <label>Monthly Property Tax: <input type="number" id="propertyTax" /></label>
+        <label>Monthly Home Insurance: <input type="number" id="insurance" /></label>
+        <label>Monthly HOA Fee: <input type="number" id="hoa" /></label>
+        <button onclick="calculate()">Calculate</button>
+        <div id="result"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
