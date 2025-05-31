@@ -15,65 +15,81 @@
             outline: none;
             box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); /* Blue focus ring */
         }
+
+        /* Adjust font size for very small screens if needed (optional) */
+        @media (max-width: 375px) { /* Targeting iPhone SE and similar small screens */
+            .text-sm {
+                font-size: 0.75rem; /* 12px */
+            }
+            .text-xl {
+                font-size: 1.125rem; /* 18px */
+            }
+            .text-3xl {
+                font-size: 1.5rem; /* 24px */
+            }
+            .text-4xl {
+                font-size: 2rem; /* 32px */
+            }
+        }
     </style>
 </head>
-<body class="bg-gradient-to-br from-blue-100 to-purple-100 min-h-screen flex items-center justify-center p-4">
-    <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md border border-gray-200">
-        <h1 class="text-3xl font-extrabold text-gray-800 mb-6 text-center">Mortgage Calculator</h1>
+<body class="bg-gradient-to-br from-blue-100 to-purple-100 min-h-screen flex items-center justify-center p-2 sm:p-4">
+    <div class="bg-white p-4 sm:p-8 rounded-xl shadow-2xl w-full max-w-xs sm:max-w-md border border-gray-200">
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-800 mb-4 sm:mb-6 text-center">Mortgage Calculator</h1>
 
-        <div class="space-y-4">
+        <div class="space-y-2 sm:space-y-4">
             <div>
-                <label for="principal" class="block text-sm font-medium text-gray-700 mb-1">Principal Loan Amount ($)</label>
-                <input type="number" id="principal" value="300000" min="0" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out">
+                <label for="principal" class="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5">Principal Loan Amt ($)</label>
+                <input type="number" id="principal" value="300000" min="0" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out text-sm">
             </div>
 
             <div>
-                <label for="interestRate" class="block text-sm font-medium text-gray-700 mb-1">Annual Interest Rate (%)</label>
-                <input type="number" id="interestRate" value="3.5" step="0.01" min="0" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out">
+                <label for="interestRate" class="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5">Annual Interest Rate (%)</label>
+                <input type="number" id="interestRate" value="3.5" step="0.01" min="0" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out text-sm">
             </div>
 
             <div>
-                <label for="loanTerm" class="block text-sm font-medium text-gray-700 mb-1">Loan Term (Years)</label>
-                <input type="number" id="loanTerm" value="30" min="1" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out">
+                <label for="loanTerm" class="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5">Loan Term (Years)</label>
+                <input type="number" id="loanTerm" value="30" min="1" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out text-sm">
             </div>
 
             <div>
-                <label for="downPayment" class="block text-sm font-medium text-gray-700 mb-1">Down Payment (%)</label>
-                <input type="number" id="downPayment" value="20" min="0" max="100" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out">
+                <label for="downPayment" class="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5">Down Payment (%)</label>
+                <input type="number" id="downPayment" value="20" min="0" max="100" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out text-sm">
             </div>
 
             <div>
-                <label for="homeInsurance" class="block text-sm font-medium text-gray-700 mb-1">Home Insurance (Monthly $)</label>
-                <input type="number" id="homeInsurance" value="100" min="0" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out">
+                <label for="homeInsurance" class="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5">Home Insurance (Monthly $)</label>
+                <input type="number" id="homeInsurance" value="100" min="0" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out text-sm">
             </div>
 
             <div>
-                <label for="hoa" class="block text-sm font-medium text-gray-700 mb-1">HOA (Monthly $)</label>
-                <input type="number" id="hoa" value="50" min="0" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out">
+                <label for="hoa" class="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5">HOA (Monthly $)</label>
+                <input type="number" id="hoa" value="50" min="0" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out text-sm">
             </div>
 
             <div>
-                <label for="propertyTax" class="block text-sm font-medium text-gray-700 mb-1">Property Tax (Half-Yearly $)</label>
-                <input type="number" id="propertyTax" value="2400" min="0" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out">
+                <label for="propertyTax" class="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5">Property Tax (Half-Yearly $)</label>
+                <input type="number" id="propertyTax" value="2400" min="0" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out text-sm">
             </div>
 
-            <button id="calculateBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+            <button id="calculateBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 sm:py-3 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 text-base sm:text-lg">
                 Calculate Mortgage
             </button>
         </div>
 
-        <div id="results" class="mt-8 p-6 bg-blue-50 rounded-xl border border-blue-200 hidden">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4 text-center">Your Estimated Monthly Payment:</h2>
-            <p class="text-4xl font-extrabold text-blue-700 text-center mb-4" id="monthlyPaymentResult">$0.00</p>
-            <div class="text-sm text-gray-600 space-y-2">
-                <p><span class="font-medium">Principal & Interest:</span> <span id="pAndIResult"></span></p>
-                <p><span class="font-medium">Home Insurance:</span> <span id="insuranceResult"></span></p>
+        <div id="results" class="mt-4 sm:mt-8 p-4 sm:p-6 bg-blue-50 rounded-xl border border-blue-200 hidden">
+            <h2 class="text-lg sm:text-xl font-semibold text-gray-800 mb-2 sm:mb-4 text-center">Your Estimated Monthly Payment:</h2>
+            <p class="text-3xl sm:text-4xl font-extrabold text-blue-700 text-center mb-2 sm:mb-4" id="monthlyPaymentResult">$0.00</p>
+            <div class="text-xs sm:text-sm text-gray-600 space-y-1 sm:space-y-2">
+                <p><span class="font-medium">P&I:</span> <span id="pAndIResult"></span></p>
+                <p><span class="font-medium">Insurance:</span> <span id="insuranceResult"></span></p>
                 <p><span class="font-medium">HOA:</span> <span id="hoaResult"></span></p>
-                <p><span class="font-medium">Property Tax (Monthly):</span> <span id="taxResult"></span></p>
+                <p><span class="font-medium">Tax (Monthly):</span> <span id="taxResult"></span></p>
             </div>
         </div>
 
-        <div id="errorMessage" class="mt-4 p-4 bg-red-100 text-red-700 rounded-lg hidden">
+        <div id="errorMessage" class="mt-2 sm:mt-4 p-3 sm:p-4 bg-red-100 text-red-700 rounded-lg hidden text-sm">
             Please fill in all fields with valid positive numbers.
         </div>
     </div>
