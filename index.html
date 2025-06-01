@@ -44,6 +44,32 @@
                 font-size: 1.5rem; /* 24px */
             }
         }
+        /* Styling for the amortization table */
+        .amortization-table th, .amortization-table td {
+            padding: 0.5rem 0.25rem; /* Reduced padding for mobile */
+            text-align: right;
+            white-space: nowrap; /* Prevent text wrapping in table headers/cells */
+        }
+        .amortization-table th {
+            font-weight: 600; /* Semi-bold for headers */
+            background-color: #e0f2fe; /* Light blue background for headers */
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .amortization-table tr:nth-child(even) {
+            background-color: #f8fafc; /* Light background for even rows */
+        }
+        .amortization-table tr:hover {
+            background-color: #e0f7fa; /* Highlight on hover */
+        }
+        /* Specific alignment for Month column */
+        .amortization-table td:first-child {
+            text-align: center;
+        }
+        .amortization-table th:first-child {
+            text-align: center;
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-blue-100 to-purple-100 min-h-screen flex items-center justify-center p-1 sm:p-2">
@@ -52,7 +78,8 @@
         <div class="w-full md:w-1/2 flex flex-col">
             <h1 class="text-xl sm:text-2xl font-extrabold text-gray-800 mb-2 sm:mb-4 text-center">Mortgage Calculator</h1>
 
-            <div class="space-y-1 sm:space-y-2 flex-grow"> <div>
+            <div class="space-y-1 sm:space-y-2 flex-grow">
+                <div>
                     <label for="principal" class="block text-xxs sm:text-xs font-medium text-gray-700 mb-0">Principal Loan Amt ($)</label>
                     <input type="number" id="principal" value="300000" min="0" class="w-full p-1 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out text-sm">
                 </div>
@@ -111,8 +138,29 @@
                 </div>
 
                 <div class="mt-4 sm:mt-6 flex justify-center">
-                    <canvas id="mortgagePieChart" class="w-full h-[200px] sm:h-[250px]"></canvas> </div>
+                    <canvas id="mortgagePieChart" class="w-full h-[200px] sm:h-[250px]"></canvas>
+                </div>
             </div>
+        </div>
+    </div>
+
+    <div id="amortizationScheduleContainer" class="bg-white p-2 sm:p-4 rounded-xl shadow-2xl w-full max-w-full md:max-w-4xl lg:max-w-5xl mt-4 hidden">
+        <h2 class="text-xl sm:text-2xl font-extrabold text-gray-800 mb-4 text-center">Amortization Schedule</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-xxs sm:text-xs border-collapse amortization-table">
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Starting Balance</th>
+                        <th>Payment</th>
+                        <th>Interest Paid</th>
+                        <th>Principal Paid</th>
+                        <th>Ending Balance</th>
+                    </tr>
+                </thead>
+                <tbody id="amortizationTableBody">
+                    </tbody>
+            </table>
         </div>
     </div>
 
@@ -133,6 +181,9 @@
         const hoaResult = document.getElementById('hoaResult');
         const taxResult = document.getElementById('taxResult');
         const errorMessageDiv = document.getElementById('errorMessage');
+        const amortizationScheduleContainer = document.getElementById('amortizationScheduleContainer');
+        const amortizationTableBody = document.getElementById('amortizationTableBody');
+
 
         // Chart.js instance variable
         let mortgageChart;
@@ -261,12 +312,58 @@
         }
 
         /**
+         * Generates and displays the amortization schedule table.
+         * @param {number} loanAmount - The initial loan amount.
+         * @param {number} annualInterestRate - The annual interest rate (%).
+         * @param {number} loanTermYears - The loan term in years.
+         * @param {number} monthlyPAndI - The calculated monthly Principal & Interest payment.
+         */
+        function displayAmortizationSchedule(loanAmount, annualInterestRate, loanTermYears, monthlyPAndI) {
+            amortizationTableBody.innerHTML = ''; // Clear previous schedule
+            let remainingBalance = loanAmount;
+            const monthlyInterestRate = (annualInterestRate / 100) / 12;
+            const numberOfPayments = loanTermYears * 12;
+
+            for (let month = 1; month <= numberOfPayments; month++) {
+                // Calculate interest paid for this month
+                let interestPaid = remainingBalance * monthlyInterestRate;
+                // Calculate principal paid for this month
+                let principalPaid = monthlyPAndI - interestPaid;
+
+                // Adjust principal paid for the last payment to avoid negative balance due to rounding
+                if (month === numberOfPayments) {
+                    principalPaid = remainingBalance; // Pay off the exact remaining balance
+                    interestPaid = monthlyPAndI - principalPaid; // Recalculate interest for the last payment
+                }
+
+                // Update remaining balance
+                remainingBalance -= principalPaid;
+
+                // Create a new table row
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${month}</td>
+                    <td>${formatCurrency(loanAmount - (principalPaid + (monthlyPAndI - interestPaid)))}</td> <td>${formatCurrency(monthlyPAndI)}</td>
+                    <td>${formatCurrency(interestPaid)}</td>
+                    <td>${formatCurrency(principalPaid)}</td>
+                    <td>${formatCurrency(Math.max(0, remainingBalance))}</td> `;
+                amortizationTableBody.appendChild(row);
+
+                // Update loanAmount for the next iteration to represent the new starting balance
+                loanAmount = Math.max(0, remainingBalance);
+            }
+
+            amortizationScheduleContainer.classList.remove('hidden'); // Show the schedule container
+        }
+
+        /**
          * Handles the calculation logic when the button is clicked.
          */
         calculateBtn.addEventListener('click', () => {
             // Hide previous results and error messages
             resultsDiv.classList.add('hidden');
             errorMessageDiv.classList.add('hidden');
+            amortizationScheduleContainer.classList.add('hidden'); // Hide schedule too
 
             // Get values from inputs and convert to numbers
             const principal = parseFloat(principalInput.value);
@@ -313,6 +410,9 @@
 
             // Update and display the pie chart
             updatePieChart(monthlyPAndI, homeInsurance, hoa, monthlyPropertyTax);
+
+            // Display the amortization schedule
+            displayAmortizationSchedule(loanAmountAfterDownPayment, interestRate, loanTerm, monthlyPAndI);
 
             // Show the results section
             resultsDiv.classList.remove('hidden');
