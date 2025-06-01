@@ -73,30 +73,33 @@
     </style>
 </head>
 <body class="bg-gradient-to-br from-blue-100 to-purple-100 min-h-screen p-1 sm:p-2 flex flex-col items-center justify-start">
-    <div class="bg-white p-2 sm:p-4 rounded-xl shadow-2xl w-full max-w-full md:max-w-4xl lg:max-w-5xl flex flex-col md:flex-row items-start md:items-stretch space-y-4 md:space-y-0 md:space-x-4 mx-auto">
 
-        <div class="w-full md:w-1/2 flex flex-col">
-            <h1 class="text-xl sm:text-2xl font-extrabold text-gray-800 mb-2 sm:mb-4 text-center">Mortgage Calculator</h1>
+    <div class="w-full max-w-full md:max-w-4xl lg:max-w-5xl flex flex-col items-center space-y-4 mx-auto">
 
-            <div class="space-y-1 sm:space-y-2 flex-grow">
-                <div>
-                    <label for="principal" class="block text-xxs sm:text-xs font-medium text-gray-700 mb-0">Principal Loan Amt ($)</label>
-                    <input type="number" id="principal" value="300000" min="0" class="w-full p-1 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out text-sm">
-                </div>
+        <div class="bg-white p-2 sm:p-4 rounded-xl shadow-2xl w-full flex flex-col md:flex-row items-start md:items-stretch space-y-4 md:space-y-0 md:space-x-4">
 
-                <div>
-                    <label for="interestRate" class="block text-xxs sm:text-xs font-medium text-gray-700 mb-0">Annual Interest Rate (%)</label>
-                    <input type="number" id="interestRate" value="3.5" step="0.01" min="0" class="w-full p-1 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out text-sm">
-                </div>
+            <div class="w-full md:w-1/2 flex flex-col">
+                <h1 class="text-xl sm:text-2xl font-extrabold text-gray-800 mb-2 sm:mb-4 text-center">Mortgage Calculator</h1>
 
-                <div class="flex space-x-1 sm:space-x-2">
-                    <div class="flex-1">
-                        <label for="loanTerm" class="block text-xxs sm:text-xs font-medium text-gray-700 mb-0">Loan Term (Yrs)</label>
-                        <input type="number" id="loanTerm" value="30" min="1" class="w-full p-1 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out text-sm">
+                <div class="space-y-1 sm:space-y-2 flex-grow">
+                    <div>
+                        <label for="principal" class="block text-xxs sm:text-xs font-medium text-gray-700 mb-0">Principal Loan Amt ($)</label>
+                        <input type="number" id="principal" value="300000" min="0" class="w-full p-1 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out text-sm">
                     </div>
-                    <div class="flex-1">
-                        <label for="downPayment" class="block text-xxs sm:text-xs font-medium text-gray-700 mb-0">Down Payment (%)</label>
-                        <input type="number" id="downPayment" value="20" min="0" max="100" class="w-full p-1 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out text-sm">
+
+                    <div>
+                        <label for="interestRate" class="block text-xxs sm:text-xs font-medium text-gray-700 mb-0">Annual Interest Rate (%)</label>
+                        <input type="number" id="interestRate" value="3.5" step="0.01" min="0" class="w-full p-1 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out text-sm">
+                    </div>
+
+                    <div class="flex space-x-1 sm:space-x-2">
+                        <div class="flex-1">
+                            <label for="loanTerm" class="block text-xxs sm:text-xs font-medium text-gray-700 mb-0">Loan Term (Yrs)</label>
+                            <input type="number" id="loanTerm" value="30" min="1" class="w-full p-1 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out text-sm">
+                        </div>
+                        <div class="flex-1">
+                            <label for="downPayment" class="block text-xxs sm:text-xs font-medium text-gray-700 mb-0">Down Payment (%)</label>
+                            <input type="number" id="downPayment" value="20" min="0" max="100" class="w-full p-1 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out text-sm">
                         </div>
                     </div>
 
@@ -144,7 +147,7 @@
             </div>
         </div>
 
-        <div id="amortizationScheduleContainer" class="bg-white p-2 sm:p-4 rounded-xl shadow-2xl w-full max-w-full md:max-w-4xl lg:max-w-5xl mt-4 hidden mx-auto">
+        <div id="amortizationScheduleContainer" class="bg-white p-2 sm:p-4 rounded-xl shadow-2xl w-full mt-4 hidden">
             <h2 class="text-xl sm:text-2xl font-extrabold text-gray-800 mb-4 text-center">Amortization Schedule</h2>
             <div class="overflow-x-auto">
                 <table class="w-full text-xxs sm:text-xs border-collapse amortization-table">
@@ -163,5 +166,263 @@
                 </table>
             </div>
         </div>
-    </body>
+    </div>
+
+    <script>
+        // Get references to all input elements and result display elements
+        const principalInput = document.getElementById('principal');
+        const interestRateInput = document.getElementById('interestRate');
+        const loanTermInput = document.getElementById('loanTerm');
+        const downPaymentInput = document.getElementById('downPayment');
+        const homeInsuranceInput = document.getElementById('homeInsurance');
+        const hoaInput = document.getElementById('hoa');
+        const propertyTaxInput = document.getElementById('propertyTax');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const resultsDiv = document.getElementById('results');
+        const monthlyPaymentResult = document.getElementById('monthlyPaymentResult');
+        const pAndIResult = document.getElementById('pAndIResult');
+        const insuranceResult = document.getElementById('insuranceResult');
+        const hoaResult = document.getElementById('hoaResult');
+        const taxResult = document.getElementById('taxResult');
+        const errorMessageDiv = document.getElementById('errorMessage');
+        const amortizationScheduleContainer = document.getElementById('amortizationScheduleContainer');
+        const amortizationTableBody = document.getElementById('amortizationTableBody');
+
+
+        // Chart.js instance variable
+        let mortgageChart;
+
+        /**
+         * Formats a number as a currency string.
+         * @param {number} amount - The number to format.
+         * @returns {string} The formatted currency string.
+         */
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(amount);
+        }
+
+        /**
+         * Calculates the monthly mortgage payment (Principal & Interest).
+         * @param {number} loanAmount - The total loan amount after down payment.
+         * @param {number} annualInterestRate - The annual interest rate (e.g., 3.5 for 3.5%).
+         * @param {number} loanTermYears - The loan term in years.
+         * @returns {number} The monthly principal and interest payment.
+         */
+        function calculateMortgagePAndI(loanAmount, annualInterestRate, loanTermYears) {
+            // Convert annual interest rate to monthly decimal rate
+            const monthlyInterestRate = (annualInterestRate / 100) / 12;
+            // Convert loan term from years to months
+            const numberOfPayments = loanTermYears * 12;
+
+            // If monthly interest rate is 0, payment is simply loan amount divided by number of payments
+            if (monthlyInterestRate === 0) {
+                return loanAmount / numberOfPayments;
+            }
+
+            // Mortgage payment formula: M = P [ i(1 + i)^n ] / [ (1 + i)^n – 1]
+            // Where:
+            // M = Monthly payment
+            // P = Principal loan amount
+            // i = Monthly interest rate
+            // n = Total number of payments (loan term in months)
+            const numerator = monthlyInterestRate * Math.pow((1 + monthlyInterestRate), numberOfPayments);
+            const denominator = Math.pow((1 + monthlyInterestRate), numberOfPayments) - 1;
+            return loanAmount * (numerator / denominator);
+        }
+
+        /**
+         * Updates or creates the pie chart with the given data.
+         * @param {number} pAndI - Monthly Principal & Interest payment.
+         * @param {number} insurance - Monthly Home Insurance payment.
+         * @param {number} hoa - Monthly HOA payment.
+         * @param {number} tax - Monthly Property Tax payment.
+         */
+        function updatePieChart(pAndI, insurance, hoa, tax) {
+            const ctx = document.getElementById('mortgagePieChart').getContext('2d');
+
+            // Data for the pie chart
+            const chartData = {
+                labels: ['P&I', 'Insurance', 'HOA', 'Property Tax'],
+                datasets: [{
+                    data: [pAndI, insurance, hoa, tax],
+                    backgroundColor: [
+                        'rgba(59, 130, 246, 0.8)', // Blue for P&I
+                        'rgba(16, 185, 129, 0.8)', // Green for Insurance
+                        'rgba(245, 158, 11, 0.8)',  // Orange for HOA
+                        'rgba(239, 68, 68, 0.8)'   // Red for Property Tax
+                    ],
+                    borderColor: [
+                        'rgba(59, 130, 246, 1)',
+                        'rgba(16, 185, 129, 1)',
+                        'rgba(245, 158, 11, 1)',
+                        'rgba(239, 68, 68, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            };
+
+            // Chart options for responsiveness and legend placement
+            const chartOptions = {
+                responsive: true,
+                maintainAspectRatio: false, // Allow canvas to resize freely
+                plugins: {
+                    legend: {
+                        position: 'bottom', // Place legend below the chart
+                        labels: {
+                            font: {
+                                size: 10 // Smaller font for legend labels on mobile
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += formatCurrency(context.parsed);
+                                }
+                                return label;
+                            }
+                        },
+                        titleFont: {
+                            size: 10 // Smaller tooltip title font
+                        },
+                        bodyFont: {
+                            size: 10 // Smaller tooltip body font
+                        }
+                    }
+                }
+            };
+
+            // Destroy existing chart instance if it exists to prevent overlap
+            if (mortgageChart) {
+                mortgageChart.destroy();
+            }
+
+            // Create new chart instance
+            mortgageChart = new Chart(ctx, {
+                type: 'pie',
+                data: chartData,
+                options: chartOptions
+            });
+        }
+
+        /**
+         * Generates and displays the amortization schedule table.
+         * @param {number} loanAmount - The initial loan amount.
+         * @param {number} annualInterestRate - The annual interest rate (%).
+         * @param {number} loanTermYears - The loan term in years.
+         * @param {number} monthlyPAndI - The calculated monthly Principal & Interest payment.
+         */
+        function displayAmortizationSchedule(loanAmount, annualInterestRate, loanTermYears, monthlyPAndI) {
+            amortizationTableBody.innerHTML = ''; // Clear previous schedule
+            let remainingBalance = loanAmount;
+            const monthlyInterestRate = (annualInterestRate / 100) / 12;
+            const numberOfPayments = loanTermYears * 12;
+
+            for (let month = 1; month <= numberOfPayments; month++) {
+                // Calculate interest paid for this month
+                let interestPaid = remainingBalance * monthlyInterestRate;
+                // Calculate principal paid for this month
+                let principalPaid = monthlyPAndI - interestPaid;
+
+                // Adjust principal paid for the last payment to avoid negative balance due to rounding
+                if (month === numberOfPayments) {
+                    principalPaid = remainingBalance; // Pay off the exact remaining balance
+                    interestPaid = monthlyPAndI - principalPaid; // Recalculate interest for the last payment
+                }
+
+                // Update remaining balance
+                remainingBalance -= principalPaid;
+
+                // Create a new table row
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${month}</td>
+                    <td>${formatCurrency(loanAmount - (principalPaid + (monthlyPAndI - interestPaid)))}</td>
+                    <td>${formatCurrency(monthlyPAndI)}</td>
+                    <td>${formatCurrency(interestPaid)}</td>
+                    <td>${formatCurrency(principalPaid)}</td>
+                    <td>${formatCurrency(Math.max(0, remainingBalance))}</td>
+                `;
+                amortizationTableBody.appendChild(row);
+
+                // Update loanAmount for the next iteration to represent the new starting balance
+                loanAmount = Math.max(0, remainingBalance);
+            }
+
+            amortizationScheduleContainer.classList.remove('hidden'); // Show the schedule container
+        }
+
+        /**
+         * Handles the calculation logic when the button is clicked.
+         */
+        calculateBtn.addEventListener('click', () => {
+            // Hide previous results and error messages
+            resultsDiv.classList.add('hidden');
+            errorMessageDiv.classList.add('hidden');
+            amortizationScheduleContainer.classList.add('hidden'); // Hide schedule too
+
+            // Get values from inputs and convert to numbers
+            const principal = parseFloat(principalInput.value);
+            const interestRate = parseFloat(interestRateInput.value);
+            const loanTerm = parseFloat(loanTermInput.value);
+            const downPaymentPercent = parseFloat(downPaymentInput.value);
+            const homeInsurance = parseFloat(homeInsuranceInput.value);
+            const hoa = parseFloat(hoaInput.value);
+            const propertyTaxHalfYearly = parseFloat(propertyTaxInput.value);
+
+            // Input validation: Check if all inputs are valid numbers and non-negative
+            if (isNaN(principal) || principal < 0 ||
+                isNaN(interestRate) || interestRate < 0 ||
+                isNaN(loanTerm) || loanTerm <= 0 ||
+                isNaN(downPaymentPercent) || downPaymentPercent < 0 || downPaymentPercent > 100 ||
+                isNaN(homeInsurance) || homeInsurance < 0 ||
+                isNaN(hoa) || hoa < 0 ||
+                isNaN(propertyTaxHalfYearly) || propertyTaxHalfYearly < 0)
+            {
+                errorMessageDiv.classList.remove('hidden'); // Show error message
+                return; // Stop execution if validation fails
+            }
+
+            // Calculate the actual down payment amount
+            const downPaymentAmount = principal * (downPaymentPercent / 100);
+            // Calculate the loan amount after down payment
+            const loanAmountAfterDownPayment = principal - downPaymentAmount;
+
+            // Calculate monthly principal and interest payment
+            const monthlyPAndI = calculateMortgagePAndI(loanAmountAfterDownPayment, interestRate, loanTerm);
+
+            // Convert half-yearly property tax to monthly
+            const monthlyPropertyTax = propertyTaxHalfYearly / 6;
+
+            // Calculate total monthly payment
+            const totalMonthlyPayment = monthlyPAndI + homeInsurance + hoa + monthlyPropertyTax;
+
+            // Display the results, formatted as currency
+            monthlyPaymentResult.textContent = formatCurrency(totalMonthlyPayment);
+            pAndIResult.textContent = formatCurrency(monthlyPAndI);
+            insuranceResult.textContent = formatCurrency(homeInsurance);
+            hoaResult.textContent = formatCurrency(hoa);
+            taxResult.textContent = formatCurrency(monthlyPropertyTax);
+
+            // Update and display the pie chart
+            updatePieChart(monthlyPAndI, homeInsurance, hoa, monthlyPropertyTax);
+
+            // Display the amortization schedule
+            displayAmortizationSchedule(loanAmountAfterDownPayment, interestRate, loanTerm, monthlyPAndI);
+
+            // Show the results section
+            resultsDiv.classList.remove('hidden');
+        });
+    </script>
+</body>
 </html>
