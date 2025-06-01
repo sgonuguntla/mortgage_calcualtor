@@ -343,10 +343,12 @@
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${month}</td>
-                    <td>${formatCurrency(loanAmount - (principalPaid + (monthlyPAndI - interestPaid)))}</td> <td>${formatCurrency(monthlyPAndI)}</td>
+                    <td>${formatCurrency(loanAmount - (principalPaid + (monthlyPAndI - interestPaid)))}</td>
+                    <td>${formatCurrency(monthlyPAndI)}</td>
                     <td>${formatCurrency(interestPaid)}</td>
                     <td>${formatCurrency(principalPaid)}</td>
-                    <td>${formatCurrency(Math.max(0, remainingBalance))}</td> `;
+                    <td>${formatCurrency(Math.max(0, remainingBalance))}</td>
+                `;
                 amortizationTableBody.appendChild(row);
 
                 // Update loanAmount for the next iteration to represent the new starting balance
